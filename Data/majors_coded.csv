@@ -1,0 +1,253 @@
+survey,major,stem,medicine,social science
+P1,(2) Art,0,0,0
+P1,(3) Music,0,0,0
+P1,(4) Dance,0,0,0
+P1,(5) Theatre,0,0,0
+P1,(6) Language/lit,0,0,0
+P1,(7) History,0,0,0
+P1,(8) Philosophy,0,0,0
+P1,(9) Other humanities,0,0,0
+P1,(11) Accounting,0,0,0
+P1,(12) Management,0,0,0
+P1,(13) Marketing,0,0,0
+P1,(14) Finance,0,0,0
+P1,(15) Info Tech,1,0,0
+P1,(16) Other business,0,0,0
+P1,(17) Communication,0,0,0
+P1,(18) Journalism,0,0,0
+P1,(20) Elem Educ,0,0,0
+P1,(21) Sec Educ,0,0,0
+P1,(22) Spec Educ,0,0,0
+P1,(23) Educ Admin,0,0,0
+P1,(24) Counseling/guidance,0,0,0
+P1,(25) Pre-school,0,0,0
+P1,(26) Measurement/testing,0,0,0
+P1,(27) Other Educ,0,0,0
+P1,(29) Chem Eng,1,0,0
+P1,(30) Civil Eng,1,0,0
+P1,(31) Elec Eng,1,0,0
+P1,(32) Mech Eng,1,0,0
+P1,(33) Comp Eng,1,0,0
+P1,(34) Space/Aero Eng,1,0,0
+P1,(35) Mat Eng,1,0,0
+P1,(36) Oth Eng,1,0,0
+P1,(37) Math,1,0,0
+P1,(39) Biology,1,0,0
+P1,(40) Chemistry,1,0,0
+P1,(41) Astronomy,1,0,0
+P1,(42) Physics,1,0,0
+P1,(43) Earth sci,1,0,0
+P1,(44) Comp Sci,1,0,0
+P1,(45) Agric/food sci,1,0,0
+P1,(46) Ec-Envi Sci,1,0,0
+P1,(47) Other Sci,1,0,0
+P1,(49) Anthroplogy,0,0,1
+P1,(50) Economics,0,0,1
+P1,(51) Geography,0,0,1
+P1,(52) Poli Sci,0,0,1
+P1,(53) Psych,0,0,1
+P1,(54) Public pol/admin,0,0,1
+P1,(55) Sociology,0,0,1
+P1,(56) Social services,0,0,1
+P1,(57) Crim/law enf,0,0,1
+P1,(58) Other Soc Sci,0,0,1
+P1,(60) Aud/speech ther,0,1,0
+P1,(61) Nursing,0,1,0
+P1,(62) Med asst,0,1,0
+P1,(63) Technicians,0,1,0
+P1,(64) Oth health/med,0,1,0
+P1,(65) Military Sci,0,0,1
+P1,(67) Ind & Tech,1,0,0
+P1,(70) Oth majors,0,0,0
+P2,(0) None,0,0,0
+P2,(1) Agriculture,0,0,0
+P2,(2) Architec/Urban Pl,0,0,0
+P2,(3) Bacteriology,1,0,0
+P2,(4) Biochemistry,1,0,0
+P2,(5) Biophysics,1,0,0
+P2,(6) Botany,1,0,0
+P2,(7) Marine Life Scien,1,0,0
+P2,(8) Physiology/Anatom,1,0,0
+P2,(9) Zoology,1,0,0
+P2,(10) General/Other Bio,1,0,0
+P2,(11) Accounting,0,0,0
+P2,(12) Finance,0,0,0
+P2,(13) Marketing,0,0,0
+P2,(14) Management,0,0,0
+P2,(15) Secretarial Studi,0,0,0
+P2,(16) General/Oth Bus,0,0,0
+P2,(17) Computer Science,1,0,0
+P2,(18) Business Educatio,0,0,0
+P2,(19) Elementary Educat,0,0,0
+P2,(20) Educational Admin,0,0,0
+P2,(21) Educ Psych/Counse,0,0,0
+P2,(22) Music or Art Educ,0,0,0
+P2,(23) Physical/Health E,0,0,0
+P2,(24) Secondary Educati,0,0,0
+P2,(25) Special Education,0,0,0
+P2,(26) General/Oth Educ,0,0,0
+P2,(27) Aeronautical/Astr,1,0,0
+P2,(28) Chemical Engineer,1,0,0
+P2,(29) Civil Engineering,1,0,0
+P2,(30) Electrical Engine,1,0,0
+P2,(31) Industrial Engine,1,0,0
+P2,(32) Mechanical Engine,1,0,0
+P2,(33) Nuclear Engineeri,1,0,0
+P2,(34) General/Oth Engin,1,0,0
+P2,(35) Ethnic Studies,0,0,0
+P2,(36) Art,0,0,0
+P2,(37) Dramatics & Speec,0,0,0
+P2,(38) Music,0,0,0
+P2,(39) Other Fine Arts,0,0,0
+P2,(40) Forestry,0,0,1
+P2,(41) Geography/Env Stu,0,0,1
+P2,(42) Dentistry,0,1,0
+P2,(43) Health Technology,0,1,0
+P2,(44) Medicine or Surge,0,1,0
+P2,(45) Nursing,0,1,0
+P2,(46) Pharmacy/Pharmaco,0,1,0
+P2,(47) Therapy-Speech/PT,0,1,0
+P2,(48) Veterinary Medici,0,1,0
+P2,(49) General/Oth Healt,0,1,0
+P2,(50) Home Economics,0,0,0
+P2,(51) English Lang & Li,0,0,0
+P2,(52) Foreign Lang & Li,0,0,0
+P2,(53) French,0,0,0
+P2,(54) German,0,0,0
+P2,(55) Spanish,0,0,0
+P2,(56) Other Foreign Lan,0,0,0
+P2,(57) History,0,0,0
+P2,(58) Linguistics,0,0,0
+P2,(59) Philosophy,0,0,0
+P2,(60) Religion & Theolo,0,0,0
+P2,(61) General/Oth Human,0,0,0
+P2,(62) Journalism,0,0,0
+P2,(63) Law,0,0,0
+P2,(64) Law Enforcement,0,0,1
+P2,(65) Library Science,0,0,1
+P2,(66) Math/Statistics,1,0,0
+P2,(67) Military Sciences,0,0,1
+P2,(68) Astronomy,1,0,0
+P2,(69) Atmospheric Scien,1,0,0
+P2,(70) Chemistry,1,0,0
+P2,(71) Earth Sci/Geology,1,0,0
+P2,(72) Marine Sci/Ocean,1,0,0
+P2,(73) Physics,1,0,0
+P2,(74) General/Oth Phys,1,0,0
+P2,(75) Clinical Psycholo,0,1,0
+P2,(76) Counseling/Guidan,0,1,0
+P2,(77) Experimental Psyc,0,1,0
+P2,(78) Social Psych,0,1,0
+P2,(79) General/Oth Psych,0,1,0
+P2,(80) Anthropology,0,0,1
+P2,(81) Archaeology,0,0,1
+P2,(82) Economics,0,0,0
+P2,(83) Political Science,0,0,1
+P2,(84) Sociology,0,0,1
+P2,(85) General/Other Soc,0,0,1
+P2,(86) Social Work,0,0,0
+P2,(87) Building Trades,0,0,0
+P2,(88) Computer Programm,1,0,0
+P2,(89) Drafting/Design,0,0,0
+P2,(90) Electronics,1,0,0
+P2,(91) Industrial Arts,0,0,0
+P2,(92) Mechanics,0,0,0
+P2,(93) Other Technical,0,0,0
+P2,(94) Other Vocational,0,0,0
+P2,(95) Women's Studies,0,0,0
+P4,(0) None/Undecided,0,0,0
+P4,(1) Agriculture,0,0,0
+P4,(2) Architec/Urban Pl,0,0,0
+P4,(3) Bacteriology,1,0,0
+P4,(4) Biochemistry,1,0,0
+P4,(5) Biophysics,1,0,0
+P4,(6) Botany,1,0,0
+P4,(7) Marine Life Scien,1,0,0
+P4,(8) Physiology/Anatom,1,0,0
+P4,(9) Zoology,1,0,0
+P4,(10) General/Other Bio,1,0,0
+P4,(11) Accounting,0,0,0
+P4,(12) Finance,0,0,0
+P4,(13) Marketing,0,0,0
+P4,(14) Management,0,0,0
+P4,(15) Secretarial Stud,0,0,0
+P4,(16) General/Oth Bus,0,0,0
+P4,(17) Computer Science,1,0,0
+P4,(18) Business Educ,0,0,0
+P4,(19) Elementary Educ,0,0,0
+P4,(20) Educational Admin,0,0,0
+P4,(21) Educ Psych/Counse,0,0,0
+P4,(22) Music or Art Educ,0,0,0
+P4,(23) Physical Health E,0,0,0
+P4,(24) Secondary Educati,0,0,0
+P4,(25) Special Education,0,0,0
+P4,(26) General/Other Edu,0,0,0
+P4,(27) Aeronautical/Astr,1,0,0
+P4,(28) Chemical Engineer,1,0,0
+P4,(29) Civil Engineering,1,0,0
+P4,(30) Electrical Engine,1,0,0
+P4,(31) Industrial Engine,1,0,0
+P4,(32) Mechanical Engine,1,0,0
+P4,(33) Nuclear Engineeri,1,0,0
+P4,(34) General/Oth Engin,1,0,0
+P4,(35) Ethnic Studies,0,0,0
+P4,(36) Art,0,0,0
+P4,(37) Dramatics and Spe,0,0,0
+P4,(38) Music,0,0,0
+P4,(39) Other Fine Arts,0,0,0
+P4,(40) Forestry,0,0,1
+P4,(41) Geography/Env Stu,0,0,1
+P4,(42) Dentistry,0,1,0
+P4,(43) Health Technology,0,1,0
+P4,(44) Medicine or Surge,0,1,0
+P4,(45) Nursing,0,1,0
+P4,(46) Pharmacy/Pharmaco,0,1,0
+P4,(47) Therapy-Speech/PT,0,1,0
+P4,(48) Veterinary Medici,0,1,0
+P4,(49) General/Other Hea,0,1,0
+P4,(50) Home Ec/Child Car,0,0,0
+P4,(51) English Lang & Li,0,0,0
+P4,(52) Foreign Lang & Li,0,0,0
+P4,(53) French,0,0,0
+P4,(54) German,0,0,0
+P4,(55) Spanish,0,0,0
+P4,(56) Other Foreign Lan,0,0,0
+P4,(57) History,0,0,0
+P4,(58) Linguistics,0,0,0
+P4,(59) Philosophy,0,0,0
+P4,(60) Religion & Theolo,0,0,0
+P4,(61) General/Oth Human,0,0,0
+P4,(62) Journalism,0,0,0
+P4,(63) Law,0,0,0
+P4,(64) Law Enforcement,0,0,1
+P4,(65) Library Science,0,0,1
+P4,(66) Mathematics or St,1,0,0
+P4,(67) Military Sciences,0,0,1
+P4,(68) Astronomy,1,0,0
+P4,(69) Atmospheric Scien,1,0,0
+P4,(70) Chemistry,1,0,0
+P4,(71) Earth Sci/Geology,1,0,0
+P4,(72) Marine Sci/Ocean,1,0,0
+P4,(73) Physics,1,0,0
+P4,(74) General/Oth Phys,1,0,0
+P4,(75) Clinical Psycholo,0,1,0
+P4,(76) Counseling/Guidan,0,1,0
+P4,(77) Experimental Psyc,0,1,0
+P4,(78) Social Psych,0,1,0
+P4,(79) General/Oth Psych,0,1,0
+P4,(80) Anthropology,0,0,1
+P4,(81) Archaeology,0,0,1
+P4,(82) Economics,0,0,0
+P4,(83) Political Science,0,0,1
+P4,(84) Sociology,0,0,1
+P4,(85) Gen/Other Soc Sci,0,0,1
+P4,(86) Social Work,0,0,0
+P4,(87) Building Trades,0,0,0
+P4,(88) Computer Programm,1,0,0
+P4,(89) Drafting/Design,0,0,0
+P4,(90) Electronics,1,0,0
+P4,(91) Industrial Arts,0,0,0
+P4,(92) Mechanics,0,0,0
+P4,(93) Other Technical,0,0,0
+P4,(94) Other Vocational,0,0,0
+P4,(95) Women's Studies,0,0,0
