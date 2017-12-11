@@ -56,7 +56,7 @@ df_weights['time'] = df_weights['variable'].map(weight_dict)
 df = df.merge(df_weights, how='left', on=['id', 'time', 'gender', 'cohort'])
 
 df = df.drop(['variable'], axis=1)
-df.columns = ['id', 'gender', 'cohort', 'yr', 'career', 'stem', 'medicine',
+df.columns = ['id', 'cohort', 'gender', 'yr', 'career', 'stem', 'medicine',
        'social science', 'time', 'weight']
 
 

@@ -1,4 +1,4 @@
-,id,gender,cohort,yr,career,stem,medicine,social science,time,weight
+,id,cohort,gender,yr,career,stem,medicine,social science,time,weight
 0,1001,(1) Older,(2) Male,F7,,,,,0,0.0
 1,1002,(2) Younger,(2) Male,F7,(18) OTHER PROFESSIONALS,0.0,0.0,0.0,0,0.9576
 2,1003,(1) Older,(1) Female,F7,,,,,0,0.0
