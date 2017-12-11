@@ -13,6 +13,8 @@ high_school_cols = ['CASENUM', 'GENDER', 'COHORT', 'STRATA', 'WEIGHT7', 'WEIGHT8
 df = data[high_school_cols]
 #df = df.reset_index()
 
+
+
 # Set column names
 set_cols = ['id', 'cohort', 'gender', 'strata', 'weight7', 'weight8', 'weight9', 'weight10', 'weight11', 'weight12', 'F7', 'S7', 'F8', 'S8', 'F9', 'S9', 'F10', 'S10', 'F11', 'S11', 'F12', 'S12']
 
@@ -32,8 +34,8 @@ set_cols.remove('weight12')
 
 # Long format
 weight_vars = ['weight7', 'weight8', 'weight9', 'weight10', 'weight11', 'weight12']
-df_weights = df.melt(id_vars=['id', 'gender', 'cohort'], value_vars= weight_vars)
-df = df.melt(id_vars=['id', 'gender', 'cohort'], value_vars=set_cols)
+df_weights = df.melt(id_vars=['id', 'gender', 'cohort', 'strata'], value_vars= weight_vars)
+df = df.melt(id_vars=['id', 'gender', 'cohort', 'strata'], value_vars=set_cols)
 
 df['value'] = df['value'].astype('category')
 
@@ -41,7 +43,7 @@ df['value'] = df['value'].astype('category')
 careers = pd.read_csv('careers.csv')
 df = df.merge(careers, how='left', left_on='value', right_on='career')
 df = df.drop(['Unnamed: 0', 'career'], axis=1)
-df.columns = ['id', 'gender', 'cohort', 'yr', 'career', 'stem', 'medicine','social science']
+df.columns = ['id', 'gender', 'cohort', 'strata', 'yr', 'career', 'stem', 'medicine','social science']
 
 # Only Fall responses
 df = df[df['yr'].isin(['F7', 'F8', 'F9', 'F10', 'F11', 'F12'])]
@@ -53,10 +55,10 @@ weight_dict = {'weight7':0, 'weight8':1, 'weight9':2, 'weight10':3, 'weight11':4
 df['time'] = df['yr'].map(dict)
 df_weights['time'] = df_weights['variable'].map(weight_dict)
 
-df = df.merge(df_weights, how='left', on=['id', 'time', 'gender', 'cohort'])
+df = df.merge(df_weights, how='left', on=['id', 'time', 'gender', 'cohort', 'strata'])
 
 df = df.drop(['variable'], axis=1)
-df.columns = ['id', 'cohort', 'gender', 'yr', 'career', 'stem', 'medicine',
+df.columns = ['CASENUM', 'COHORT', 'GENDER', 'STRATA', 'yr', 'career', 'stem', 'medicine',
        'social science', 'time', 'weight']
 
 
