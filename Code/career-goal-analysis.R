@@ -1,6 +1,7 @@
 library(ggplot2)
 library(geepack)
 library(dplyr)
+library(tidyr)
 
 # Read data and merge to full dataset
 setwd('stem-gender-analysis')
@@ -26,12 +27,12 @@ ggplot(means, aes(x=as.numeric(year_from_baseline), y=engagement, group=GENDER, 
 m1 <- geeglm(engagement ~ GENDER*year_from_baseline, data = cgoal, id=CASENUM, family=binomial(), weights=weight)
 summary(m1)
 
-
-
 # Grade school
 grade <- all_data[which(all_data$year_from_baseline < 6),]
 m4 <- geeglm(engagement ~ GENDER*year_from_baseline, data = grade, id=CASENUM, family=binomial(), weights=weight)
 summary(m4)$coef
+
+glimpse(all_data)
 
 means.1 <- means[which(means$year_from_baseline < 6),]
 ggplot(means.1, aes(x=as.numeric(year_from_baseline), y=engagement, group=GENDER, color=GENDER)) + 
@@ -55,3 +56,20 @@ summary(m2)$coef
 means.3 <- means[which(means$year_from_baseline > 12),]
 ggplot(means.3, aes(x=as.numeric(year_from_baseline), y=engagement, group=GENDER, color=GENDER)) + 
   geom_point() +geom_line()
+
+# Strata
+m5 <- geeglm(engagement ~ STRATA*year_from_baseline,  data = post_college, id=CASENUM, family=binomial(), weights=weight)
+summary(m5)
+
+means.strata <- aggregate(engagement ~ STRATA + year_from_baseline, data = all_data, FUN=mean, na.rm = TRUE, weights=weight)
+means.strata
+
+ggplot(means.strata, aes(x=as.numeric(year_from_baseline), y=engagement, group=STRATA, color=STRATA)) + 
+  geom_point() + geom_line()
+
+all_data$STRATA1 <- NA
+separate(all_data, STRATA, into=data$STRATA1, sep='-')
+
+
+
+
