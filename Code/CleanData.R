@@ -1,7 +1,8 @@
 library(tidyr)
-library(dplyr)
 library(reshape2)
 library(CRTgeeDR)
+library(ggplot2)
+library(dplyr)
 
 setwd('stem-gender-analysis')
 
@@ -195,58 +196,119 @@ wideData$health <- ifelse(is.na(wideData$health), wideData$h2009, wideData$healt
 wideData$health <- ifelse(is.na(wideData$health), wideData$h2010, wideData$health)
 wideData$health <- ifelse(is.na(wideData$health), wideData$h2011, wideData$health) 
 
-wideData <- select(wideData, c('CASENUM', 'COHORT', 'GENDER', 'STRATA', 'SCHOOLID', 'RACETH', 'STEM', 'year_from_baseline',
-                   'urban', 'nkids', 'edulevel', 'health'))
+wideData <- select(wideData, CASENUM, COHORT, GENDER, STRATA, SCHOOLID, RACETH, STEM, year_from_baseline,
+                   urban, nkids, edulevel, health)
+head(wideData)
 wideData <- wideData[order(wideData$CASENUM),]
 
 
 
 # -------------------------------
 # Modeling
-model1 <- geeDREstimation(STEM~GENDER.int*year_from_baseline, id='CASENUM', data=wideData, nameTRT='GENDER.int', family='binomial')
+
+modelData <- wideData
+
+# Prep Data
+modelData$time <- modelData$year_from_baseline - 20
+modelData$MISSING <- ifelse(is.na(modelData$STEM), 1, 0)
+modelData$GENDER <- as.factor(ifelse(modelData$GENDER == '(2) Male', 'Male', 'Female'))
+modelData$GENDER.int <- as.integer(modelData$GENDER) - 1
+View(modelData)
+
+# Time * Gender
+model1 <- geeDREstimation(STEM~as.factor(GENDER)*time, id='CASENUM', data=modelData,
+                          nameTRT='time', family='binomial',
+                          model.weights = I(MISSING==0) ~ time*GENDER.int)
 summary(model1)
 
-wideData$MISSING <- ifelse(is.na(wideData$STEM), 1, 0)
-wideData$TRT <- wideData$GENDER.int
-wideData$OUTCOME <- wideData$STEM
-wideData$AGE <- wideData$year_from_baseline
-wideData$CLUSTER <- wideData$CASENUM
-head(wideData)
 
-weights <- as.integer(I(wideData$MISSING==0)-wideData$GENDER.int*wideData$year_from_baseline)
-weights
+CIs <- t(data.frame(exp(getCI(model1, name='time'))))
+CIs <- data.frame()
+CIs[Estimate,]    
+ #   [c('Estimate', 'CI Sandwich min', 'CI Sandwich max')]
+getPSPlot(model1, typeplot = 0)
+print(summary(model1))
 
-model2 <- geeDREstimation(OUTCOME~TRT*AGE, id='CLUSTER', data=wideData, family='binomial',
-                          model.weights = I(wideData$MISSING==0)-wideData$TRT*wideData$AGE)
 
-model2 <- geeDREstimation(OUTCOME~TRT*AGE, id='CLUSTER', data=data.sim, family='binomial',
-                                    model.weights = data.sim$MISSING)
-  
-data.sim$MISSING
+getCI(model1, name='time') %>% kable(format="latex")
 
-head(data.sim)
 
+# Time * Gender * # Kids
+model2 <- geeDREstimation(STEM~time*nkids*as.factor(GENDER), id='CASENUM', data=modelData,
+                          nameTRT='time', family='binomial',
+                          model.weights = I(MISSING==0) ~ time * STRATA * COHORT * nkids)
 summary(model2)
-
-model2 <- geeDREstimation(STEM~GENDER.int*year_from_baseline*health, id='CASENUM', data=wideData, 
-                          nameTRT='GENDER.int', family='binomial',model.weights = I(wideData$MISSING==0)~GENDER.int*wideData$year_from_baseline*health)
-
-summary(model2)
+getCI(model2, name='time')
+getPSPlot(model2, typeplot = 0)
+print(summary(model2))
 
 
 
-wideData
-
-
-library(ggplot2)
-
-
-means <- aggregate(wideData$STEM, by=list(wideData$GENDER, wideData$year_from_baseline), FUN=mean, na.rm = T)
-
-ggplot(means, aes(y=x, x=Group.2)) + geom_point()
 
 
 
+
+
+
+
+ 
+# GENDER
+means.1 <- aggregate(modelData$STEM, by=list(modelData$GENDER, modelData$time), FUN=mean, na.rm = T)
+names(means.1) <- c('Gender', 'Time', 'Mean STEM Engagement')
+means.1$Gender <- as.factor(means.1$Gender)
+ggplot(means.1, aes(y=`Mean STEM Engagement`, x=Time, col=Gender, group=Gender)) + 
+  geom_point() + 
+  geom_line() +
+  labs(x = 'Time (post-baseline, in years)', 
+       title = 'Mean STEM Engagement in Adults Over Time')
+
+
+# Number of Kids
+means.kids <- aggregate(modelData$nkids, by=list(modelData$GENDER, modelData$time), FUN=mean, na.rm = T)
+names(means.kids) <- c('Gender', 'Time', 'Mean # Children')
+means.kids$Gender <- as.factor(means.kids$Gender)
+ggplot(means.kids, aes(y=`Mean # Children`, x=Time, col=Gender, 
+                    group=Gender)) + geom_point() + geom_line() +
+  labs(x = 'Time (post-baseline, in years)', 
+       title = 'Mean Number of Children at Home Over Time')
+
+# Health Over Time
+means.health <- aggregate(modelData$health, by=list(modelData$GENDER, modelData$time), FUN=mean, na.rm=T)
+names(means.health) <- c('Gender', 'Time', 'Mean Health Rating')
+means.health$Gender <- as.factor(means.health$Gender)
+
+ggplot(means.health, aes(y=`Mean Health Rating`, x=Time, col=Gender,
+                    group=Gender)) + geom_point() + geom_line() +
+  labs(x = 'Time (post-baseline, in years)', 
+       title = 'Mean Health Rating in Adults Over Time')
+
+# Health Rating by # Children
+means.health2 <- aggregate(modelData$health, by=list(modelData$GENDER, modelData$nkids), FUN=mean, na.rm=T)
+names(means.health2) <- c('Gender', '# Children', 'Mean Health Rating')
+means.health2$Gender <- as.factor(means.health2$Gender)
+
+ggplot(means.health2, aes(y=`Mean Health Rating`, x=`# Children`, col=`Gender`,
+                         group=`Gender`)) + geom_point() + geom_line() +
+  labs(title = 'Mean Health Rating in Adults Over Time')
+
+# Health and STEM
+modelData$health.cut <- cut(modelData$health, 10, labels=c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+modelData$health.cut
+means.health3 <- aggregate(modelData$STEM, by=list(modelData$GENDER, modelData$health.cut), FUN=mean, na.rm=T)
+means.health3
+names(means.health3) <- c('Gender', 'Health', 'STEM')
+means.health3$Gender <- as.factor(means.health3$Gender)
+means.health3$Health <- as.factor(means.health3$Health)
+
+ggplot(means.health3, aes(y=STEM, x=Health, col=Gender,
+                          group=`Gender`)) + geom_point() + geom_line() +
+  labs(title = 'Mean Stem Engagement by Health Status', x='Health Rating', y='Mean STEM Engagement')
+
+
+
+# STEM by # Children
+ggplot(modelData, aes(x=as.factor(STEM), y=as.factor(nkids), color=GENDER)) + geom_jitter(alpha=.7) + 
+  labs(x='STEM Engagement', y='# Children at Home', title='STEM Engagement by Number of Children')
 
 
 
