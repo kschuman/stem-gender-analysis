@@ -106,29 +106,27 @@ allData <- subset(allData, select = -c(R20, U26)) # Remove old columns
 
 # Prepare data by recoding college and employment fields
 cleanData <- allData %>%
+  mutate(MAJSTEM=regroup(as.numeric(RMAJLAST)-1,accepted=stem_majors)) %>% 
   mutate_at(.vars=vars("RSTEMM10","SSTEMM10","TSTEMM10","USTEMM10","VSTEMM10"),
             .funs=as.numeric) %>%
   mutate_at(.vars=vars("RSTEMM10","SSTEMM10","TSTEMM10","USTEMM10","VSTEMM10"),
             .funs=funs(regroup),accepted=stem_jobs) %>%
-  mutate(RMAJLAST=regroup(as.numeric(RMAJLAST),accepted=stem_majors))
+  mutate(RMAJLAST=regroup(as.numeric(RMAJLAST)-1,accepted=stem_majors))
+
 
 
 #longData <- select(stem_majors, -c(RSTEMM10, SSTEMM10, TSTEMM10, USTEMM10, VSTEMM10, RMAJLAST)) %>% 
 #  melt(variable.name='key', value.names='value', 
 #       id.vars=c('CASENUM', 'COHORT', 'GENDER', 'STRATA', 'SCHOOLID', 'RACETH'))
 
-#ids <- 
-#k <- melt(stem_majors, variable.name = 'key', value.name='value', id.vars = )
-
-
 
 
 #---------------------------
 # Condition on STEM major in college
-stem_majors <- cleanData[which(cleanData$RMAJLAST == 1),]
+stem_majors_list <- cleanData[which(cleanData$RMAJLAST == 1),]
 
 # Table for yearly STEM engagement
-stem_table <- stem_majors[c('CASENUM', 'RSTEMM10', 'SSTEMM10', 'TSTEMM10', 'USTEMM10', 'VSTEMM10')]
+stem_table <- stem_majors_list[c('CASENUM', 'RSTEMM10', 'SSTEMM10', 'TSTEMM10', 'USTEMM10', 'VSTEMM10')]
 names(stem_table) <- c('CASENUM', 'j07', 'j08', 'j09', 'j10', 'j11')
 stem_table <- melt(stem_table, variable.name = 'life_stage', value.name='STEM', id.var = 'CASENUM')
 
@@ -136,7 +134,7 @@ stem_table <- melt(stem_table, variable.name = 'life_stage', value.name='STEM', 
 # Long form for all data
 column_years <- read.csv('Data/col_years.csv', header=TRUE)
 names(column_years) <- c('key', 'life_stage')
-longData <- select(stem_majors, -c(RSTEMM10, SSTEMM10, TSTEMM10, USTEMM10, VSTEMM10, 
+longData <- select(stem_majors_list, -c(RSTEMM10, SSTEMM10, TSTEMM10, USTEMM10, VSTEMM10, 
                                    RMAJLAST, R321, R316, S1G2, S1B1C, S1D, S1D1, T26, T1D, T20, U12,
                                    U1D, U20, V22, V12, V76AP, VMARIT, R3)) %>% 
   melt(variable.name='key', value.names='value', 
@@ -213,50 +211,67 @@ modelData$time <- modelData$year_from_baseline - 20
 modelData$MISSING <- ifelse(is.na(modelData$STEM), 1, 0)
 modelData$GENDER <- as.factor(ifelse(modelData$GENDER == '(2) Male', 'Male', 'Female'))
 modelData$GENDER.int <- as.integer(modelData$GENDER) - 1
+modelData$edulevel <- as.factor(ifelse(modelData$edulevel == '(4) Masters', '(3) Bacc', 
+                                       modelData$edulevel))
+levels(modelData$edulevel) <- c('<PHD', 'PHD')
 View(modelData)
 
 # Time * Gender
 model1 <- geeDREstimation(STEM~as.factor(GENDER)*time, id='CASENUM', data=modelData,
                           nameTRT='time', family='binomial',
                           model.weights = I(MISSING==0) ~ time*GENDER.int)
-summary(model1)
 
 
-CIs <- t(data.frame(exp(getCI(model1, name='time'))))
-CIs <- data.frame()
-CIs[Estimate,]    
- #   [c('Estimate', 'CI Sandwich min', 'CI Sandwich max')]
-getPSPlot(model1, typeplot = 0)
-print(summary(model1))
-
-
-getCI(model1, name='time') %>% kable(format="latex")
+info <- data.frame(Parameter=c('Intercept', 'Gender-Male', 'Time', 'Gender-Male:Time'), 
+                   Estimate=c(0.375, 3.610, 0.969, 1.015),
+                   Lower=c(0.201, 1.744, 0.838, 0.858),
+                   Upper=c(0.701, 7.475, 1.120, 1.202),
+                   SE=round(c(exp(.318), exp(.371), exp(.074), exp(.086)), 3),
+                   `p-value`=c('0.002', '<.001', '0.667', '0.860'))
+info
+info %>%kable(format='latex')
 
 
 # Time * Gender * # Kids
 model2 <- geeDREstimation(STEM~time*nkids*as.factor(GENDER), id='CASENUM', data=modelData,
                           nameTRT='time', family='binomial',
-                          model.weights = I(MISSING==0) ~ time * STRATA * COHORT * nkids)
+                          model.weights = I(MISSING==0) ~ time * STRATA * COHORT * nkids )
+
+info <- data.frame(Parameter=c('Intercept', 'Time', 'Number Kids', 'Gender-Male',
+                               'Time:NumberKids', 'Time:Gender-Male', 'NumberKids:Gender-Male',
+                               'Time:NumberKids:Gender-Male'),
+                   Estimate=c(0.503, 0.952, 0.735, 3.510, 1.033, 1.000, 1.079, 1.005),
+                   Lower=c(0.219, 0.781, 0.412, 1.339, 0.911, 0.788, 0.560, 0.871),
+                   Upper=c(1.156, 1.161, 1.314, 9.201, 1.170, 1.268, 2.076, 1.159),
+                   SE=round(exp(c( 0.424, 0.101, 0.296, 0.492, 0.064, 0.121, 0.334, 0.073)), 3),
+                   `p-value`=c(0.106, 0.626, 0.299, 0.011, 0.615, 0.998, 0.820, 0.950))
+
+info %>%kable(format='latex')
+
+
+getPSPlot(model2)
+print(summary(model1))
+
+median(model2$weights)
+(model1$weights)
+
+getCI(model1, name='time') %>% kable(format="latex")
+
+
+
 summary(model2)
 getCI(model2, name='time')
 getPSPlot(model2, typeplot = 0)
 print(summary(model2))
 
 
-
-
-
-
-
-
-
-
- 
 # GENDER
-means.1 <- aggregate(modelData$STEM, by=list(modelData$GENDER, modelData$time), FUN=mean, na.rm = T)
-names(means.1) <- c('Gender', 'Time', 'Mean STEM Engagement')
+means.1 <- aggregate(modelData$STEM, by=list(modelData$GENDER, modelData$time, modelData$COHORT), FUN=mean, na.rm = T)
+means.1
+names(means.1) <- c('Gender', 'Time', 'Cohort', 'Mean STEM Engagement')
+means.1$`GenderCohort` <- paste(means.1$Gender, means.1$Cohort)
 means.1$Gender <- as.factor(means.1$Gender)
-ggplot(means.1, aes(y=`Mean STEM Engagement`, x=Time, col=Gender, group=Gender)) + 
+ggplot(means.1, aes(y=`Mean STEM Engagement`, x=Time, col=GenderCohort, group=GenderCohort)) + 
   geom_point() + 
   geom_line() +
   labs(x = 'Time (post-baseline, in years)', 
@@ -271,6 +286,20 @@ ggplot(means.kids, aes(y=`Mean # Children`, x=Time, col=Gender,
                     group=Gender)) + geom_point() + geom_line() +
   labs(x = 'Time (post-baseline, in years)', 
        title = 'Mean Number of Children at Home Over Time')
+
+# Number of Kids & STEM 
+means.kids.stem <- aggregate(modelData$STEM, by=list(modelData$GENDER, modelData$nkids), FUN=mean, na.rm=T)
+names(means.kids.stem) <-  c('Gender', '# Children', 'Mean STEM Engagement')
+means.kids.stem$Gender <- as.factor(means.kids.stem$Gender)
+ggplot(means.kids.stem, aes(y=`Mean STEM Engagement`, x=`# Children`, col=Gender, 
+                       group=Gender)) + geom_point() + geom_line() +
+  labs(title = 'STEM Engagement by Number of Children')
+
+modelData[which(modelData$nkids > 4),]
+
+
+
+
 
 # Health Over Time
 means.health <- aggregate(modelData$health, by=list(modelData$GENDER, modelData$time), FUN=mean, na.rm=T)
@@ -312,4 +341,6 @@ ggplot(modelData, aes(x=as.factor(STEM), y=as.factor(nkids), color=GENDER)) + ge
 
 
 
+# Missing values
+summary(modelData)
 
